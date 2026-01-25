@@ -1,6 +1,6 @@
 import type { TableNoteDef } from "../../types";
 
-export default function TableNote({ note }: { note: TableNoteDef }) {
+export default function TableNoteEditor({ note }: { note: TableNoteDef }) {
     return (
         <table>
             <tbody>

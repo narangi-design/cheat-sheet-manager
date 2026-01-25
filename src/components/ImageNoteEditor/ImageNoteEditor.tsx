@@ -1,6 +1,6 @@
 import type { ImageNoteDef } from "../../types";
 
-export default function TableNote({ note }: { note: ImageNoteDef }) {
+export default function ImageNoteEditor({ note }: { note: ImageNoteDef }) {
     return (
         <img src={note.imageUrl}/>
     )

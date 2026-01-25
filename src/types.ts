@@ -6,19 +6,27 @@ type BaseNoteDef = {
     createdAt: number
 }
 
+export const NOTE_TYPES = {
+    TEXT: 'text',
+    TABLE: 'table',
+    IMAGE: 'image'
+} as const
+type ValueOf<T> = T[keyof T]
+export type NoteType = ValueOf<typeof NOTE_TYPES>
+
 type TextContent = {
-    type: 'text'
+    type: typeof NOTE_TYPES.TEXT
     content: string
 }
 
 type TableContent = {
-    type: 'table'
+    type: typeof NOTE_TYPES.TABLE
     cols: number
     rows: string[][]
 }
 
 type ImageContent = {
-    type: 'image'
+    type: typeof NOTE_TYPES.IMAGE
     imageUrl: string
 }
 
