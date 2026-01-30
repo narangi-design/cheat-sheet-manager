@@ -1,4 +1,4 @@
-type BaseNoteDef = {
+export type BaseNoteData = {
     id: number
     title: string | null
     tags: Set<string>
@@ -11,8 +11,6 @@ export const NOTE_TYPES = {
     TABLE: 'table',
     IMAGE: 'image'
 } as const
-type ValueOf<T> = T[keyof T]
-export type NoteType = ValueOf<typeof NOTE_TYPES>
 
 type TextContent = {
     type: typeof NOTE_TYPES.TEXT
@@ -30,7 +28,8 @@ type ImageContent = {
     imageUrl: string
 }
 
-export type TextNoteDef = BaseNoteDef & TextContent
-export type TableNoteDef = BaseNoteDef & TableContent
-export type ImageNoteDef = BaseNoteDef & ImageContent
-export type NoteDef = TextNoteDef | TableNoteDef | ImageNoteDef
+export type NoteType = typeof NOTE_TYPES[keyof typeof NOTE_TYPES]
+export type TextNoteData = BaseNoteData & TextContent
+export type TableNoteData = BaseNoteData & TableContent
+export type ImageNoteData = BaseNoteData & ImageContent
+export type NoteData = TextNoteData | TableNoteData | ImageNoteData

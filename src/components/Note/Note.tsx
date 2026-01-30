@@ -1,30 +1,31 @@
 import type { ReactElement } from 'react'
+import styles from './Note.module.css'
 import { Tag } from '../Tag'
-import { TextNoteEditor } from '../TextNoteEditor'
-import { TableNoteEditor } from '../TableNoteEditor'
-import { ImageNoteEditor } from '../ImageNoteEditor'
-import type { NoteDef } from '../../types.ts'
+import { TextNote } from '../TextNote/index.ts'
+import { TableNote } from '../TableNote/index.ts'
+import { ImageNote } from '../ImageNote/index.ts'
+import type { NoteData } from '../../types.ts'
 
 
-function insertNote({ note }: { note: NoteDef }): ReactElement {
+function insertNote({ note }: { note: NoteData }): ReactElement {
     switch (note.type) {
         case 'text':
-            return <TextNoteEditor note={note} />
+            return <TextNote note={note} />
         case 'table':
-            return <TableNoteEditor note={note} />
+            return <TableNote note={note} />
         case 'image':
-            return <ImageNoteEditor note={note} />
+            return <ImageNote note={note} />
         default:
             return <></>
     }
 }
 
-export default function Note(note: NoteDef) {
+export default function Note(note: NoteData) {
     return (
-        <>
+        <div className={styles.note}>
             <h3>{note.title || ''}</h3>
             {insertNote({ note })}
             <Tag />
-        </>
+        </div>
     )
 }

@@ -1,4 +1,4 @@
-export default function Tag () {
+export default function NoteEditorForm () {
     return(
         <>
         </>

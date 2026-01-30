@@ -1,1 +1,0 @@
-export { default as TextNoteEditor } from './TextNoteEditor'

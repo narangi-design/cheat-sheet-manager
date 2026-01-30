@@ -3,7 +3,7 @@ import styles from './CreateNoteButton.module.css'
 
 interface CreateNoteButtonProps {
     noteType: NoteType
-    onAddNote: (noteType: NoteType) => void
+    onCreateNote: (noteType: NoteType) => void
 }
 
 type NoteTypeContent = {
@@ -31,7 +31,7 @@ export default function CreateNoteButton(props: CreateNoteButtonProps) {
     return (
         <button 
             className={styles.createNoteButton}
-            onClick={() => props.onAddNote(props.noteType)}
+            onClick={() => props.onCreateNote(props.noteType)}
         >
             <span>{buttonContent.icon}</span>
             <label>{buttonContent.label}</label>
