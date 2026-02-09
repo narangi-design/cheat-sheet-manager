@@ -1,1 +1,0 @@
-export { default as TableNote } from './TableNote'
