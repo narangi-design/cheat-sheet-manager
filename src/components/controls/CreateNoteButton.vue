@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NOTE_TYPES, type NoteType } from '../types'
+import { NOTE_TYPES, type NoteType } from '../../types'
 
 interface CreateNoteButtonProps {
   noteType: NoteType

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Tag from './Tag.vue'
+import Tag from '../Tag.vue'
 import TextNote from './TextNote.vue'
 import TableNote from './TableNote.vue'
 import ImageNote from './ImageNote.vue'
-import type { NoteData } from '../types'
+import type { NoteData } from '../../types'
 
 const props = defineProps<NoteData>()
 </script>

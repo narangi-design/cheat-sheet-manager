@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import CreateNoteButton from './components/CreateNoteButton.vue'
-import Note from './components/Note.vue'
-import { NOTE_TYPES } from './types'
+import CreateNoteButton from './components/controls/CreateNoteButton.vue'
+import EditNoteForm from './components/forms/EditNoteForm.vue'
+import Note from './components/notes/Note.vue'
+import { NOTE_TYPES, type NoteType } from './types'
 
-const isFormOpen = ref(false)
+const activeForm = ref<NoteType | null>(null)
 
 function createTextNoteHandler() {
-  isFormOpen.value = true
+  activeForm.value = NOTE_TYPES.TEXT
 }
 
 function createTableNoteHandler() {
-  isFormOpen.value = true
+  activeForm.value = NOTE_TYPES.TABLE
 }
 
 function createImageNoteHandler() {
-  isFormOpen.value = true
+  activeForm.value = NOTE_TYPES.IMAGE
+}
+
+function closeForm() {
+  activeForm.value = null
 }
 </script>
 
@@ -31,6 +36,7 @@ function createImageNoteHandler() {
       :type="NOTE_TYPES.TEXT"
     />
   </div>
+  <EditNoteForm v-if="activeForm" :noteType="activeForm" @close="closeForm" />
   <nav class="add-note-buttons">
     <CreateNoteButton :noteType="NOTE_TYPES.TEXT" @createNote="createTextNoteHandler" />
     <CreateNoteButton :noteType="NOTE_TYPES.TABLE" @createNote="createTableNoteHandler" />

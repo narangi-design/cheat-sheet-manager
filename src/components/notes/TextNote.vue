@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TextNoteData } from '../types'
+import type { TextNoteData } from '../../types'
 
 defineProps<{ note: TextNoteData }>()
 </script>
