@@ -40,9 +40,3 @@ const buttonContent = createNoteButtonContent[props.noteType]
     <label>{{ buttonContent.label }}</label>
   </button>
 </template>
-
-<style scoped>
-.create-note-button {
-  
-}
-</style>

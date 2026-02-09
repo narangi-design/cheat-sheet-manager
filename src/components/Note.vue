@@ -20,9 +20,11 @@ const props = defineProps<NoteData>()
 
 <style scoped>
 .note {
-  padding: 20px;
-  margin: 20px;
-  background-color: darkgrey;
-  color: black;
+  padding: var(--space-lg);
+  margin: var(--space-lg);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: var(--border-default);
+  box-shadow: var(--shadow-sm);
 }
 </style>
