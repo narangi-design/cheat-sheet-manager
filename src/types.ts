@@ -1,7 +1,7 @@
 export type BaseNoteData = {
-    id: number
+    id: string
     title: string | null
-    tags: Set<string>
+    tags: string[]
     isPinned: boolean
     createdAt: number
 }

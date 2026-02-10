@@ -4,7 +4,9 @@ import CreateNoteButton from './components/controls/CreateNoteButton.vue'
 import EditNoteForm from './components/forms/EditNoteForm.vue'
 import Note from './components/notes/Note.vue'
 import { NOTE_TYPES, type NoteType } from './types'
+import { useNotesStore } from './stores/notes'
 
+const store = useNotesStore()
 const activeForm = ref<NoteType | null>(null)
 
 function createTextNoteHandler() {
@@ -27,13 +29,9 @@ function closeForm() {
 <template>
   <div class="all-notes">
     <Note
-      title="Text Note"
-      content="First note!"
-      :id="1"
-      :tags="new Set(['tag1', 'tag2'])"
-      :isPinned="true"
-      :createdAt="20250126"
-      :type="NOTE_TYPES.TEXT"
+      v-for="note in store.notes"
+      :key="note.id"
+      v-bind="note"
     />
   </div>
   <EditNoteForm v-if="activeForm" :noteType="activeForm" @close="closeForm" />
@@ -43,3 +41,6 @@ function closeForm() {
     <CreateNoteButton :noteType="NOTE_TYPES.IMAGE" @createNote="createImageNoteHandler" />
   </nav>
 </template>
+
+<style>
+</style>
