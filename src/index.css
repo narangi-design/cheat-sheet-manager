@@ -25,8 +25,8 @@
   --color-surface: #FFFFFF;
   --color-text: var(--color-gray-200);
   --color-text-muted: var(--color-sage-400);
-  --color-primary: var(--color-slate-300);
-  --color-primary-hover: var(--color-slate-400);
+  --color-primary: var(--color-slate-400);
+  --color-primary-hover: var(--color-slate-300);
   --color-accent: var(--color-sage-500);
   --color-border: var(--color-slate-100);
 
@@ -109,7 +109,7 @@ body {
 
 #root {
   margin: 0 auto;
-  padding: var(--space-xl);
+  padding: var(--space-md);
 }
 
 a {
@@ -129,7 +129,7 @@ button {
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   border: var(--border-default);
-  padding: var(--padding-sm) var(--padding-md);
+  padding: var(--space-xs) var(--space-sm);
   background-color: var(--color-surface);
   color: var(--color-text);
   transition: border-color var(--transition-base), background-color var(--transition-base);

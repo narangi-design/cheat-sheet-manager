@@ -19,8 +19,7 @@ type TextContent = {
 
 type TableContent = {
     type: typeof NOTE_TYPES.TABLE
-    cols: number
-    rows: string[][]
+    content: string
 }
 
 type ImageContent = {

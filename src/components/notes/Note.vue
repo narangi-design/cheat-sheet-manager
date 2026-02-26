@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Tag from '../Tag.vue'
 import NoteActionButton from '../controls/NoteActionButton.vue'
+import penIcon from '../../assets/icons/pen.svg?raw'
+import trashIcon from '../../assets/icons/trash.svg?raw'
 import TextNote from './TextNote.vue'
 import TableNote from './TableNote.vue'
 import ImageNote from './ImageNote.vue'
@@ -16,26 +18,43 @@ const emit = defineEmits<{
 
 <template>
   <div class="note">
-    <small>ID: {{ props.id }}</small>
-    <h3>{{ props.title || '' }}</h3>
+    <div class="note-header">
+      <h3 v-if="props.title">{{ props.title }}</h3>
+      <div class="note-actions">
+        <NoteActionButton label="Edit" :icon="penIcon" @click="emit('edit', props.id)" />
+        <NoteActionButton label="Delete" :icon="trashIcon" @click="emit('delete', props.id)" />
+      </div>
+    </div>
     <TextNote v-if="props.type === 'text'" :note="props" />
     <TableNote v-else-if="props.type === 'table'" :note="props" />
     <ImageNote v-else-if="props.type === 'image'" :note="props" />
     <Tag />
-    <div class="note-actions">
-      <NoteActionButton label="Edit" @click="emit('edit', props.id)" />
-      <NoteActionButton label="Delete" @click="emit('delete', props.id)" />
-    </div>
   </div>
 </template>
 
 <style scoped>
 .note {
-  padding: var(--space-lg);
-  margin: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  max-width: 22rem;
   background-color: var(--color-surface);
   color: var(--color-text);
   border: var(--border-default);
   box-shadow: var(--shadow-sm);
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.note-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+  margin-left: auto;
 }
 </style>

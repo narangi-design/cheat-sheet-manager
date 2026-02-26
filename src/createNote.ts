@@ -36,8 +36,7 @@ export default function createNote(noteType: NoteType): NoteData {
             return {
                 ...note,
                 type: NOTE_TYPES.TABLE,
-                cols: 2,
-                rows: [['', '']]
+                content: ''
             }
         case NOTE_TYPES.IMAGE:
             return {
