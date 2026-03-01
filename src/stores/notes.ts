@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { NoteData } from '../types'
 
 export const useNotesStore = defineStore('notes', () => {
     const notes = ref<NoteData[]>([])
+
+    const allTags = computed(() => [...new Set(notes.value.flatMap(n => n.tags))])
 
     function addNote(note: NoteData) {
         notes.value.push(note)
@@ -20,7 +22,7 @@ export const useNotesStore = defineStore('notes', () => {
         }
     }
 
-    return { notes, addNote, deleteNote, updateNote }
+    return { notes, allTags, addNote, deleteNote, updateNote }
 }, {
     persist: true
 })

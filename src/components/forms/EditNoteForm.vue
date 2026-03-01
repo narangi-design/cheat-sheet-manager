@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import EditTextNoteForm from './EditTextNoteForm.vue'
 import EditTableNoteForm from './EditTableNoteForm.vue'
 import EditImageNoteForm from './EditImageNoteForm.vue'
+import TagInput from '../controls/TagInput.vue'
 import { NOTE_TYPES, type NoteData } from '../../types'
 import { useNotesStore } from '../../stores/notes'
 
@@ -17,12 +18,13 @@ const emit = defineEmits<{
 const store = useNotesStore()
 const isExisting = store.notes.some(n => n.id === props.note.id)
 const editedTitle = ref(props.note.title ?? '')
+const editedTags = ref([...props.note.tags])
 const textFormRef = ref<InstanceType<typeof EditTextNoteForm> | null>(null)
 const tableFormRef = ref<InstanceType<typeof EditTableNoteForm> | null>(null)
 const imageFormRef = ref<InstanceType<typeof EditImageNoteForm> | null>(null)
 
 function buildNote(): NoteData {
-  const base = { ...props.note, title: editedTitle.value || null }
+  const base = { ...props.note, title: editedTitle.value || null, tags: editedTags.value }
 
   switch (base.type) {
     case NOTE_TYPES.TEXT:
@@ -73,6 +75,7 @@ function handleSave() {
         ref="imageFormRef"
         :imageUrl="note.imageUrl"
       />
+      <TagInput v-model="editedTags" :suggestions="store.allTags" />
       <button @click="handleSave">Save</button>
     </div>
   </div>

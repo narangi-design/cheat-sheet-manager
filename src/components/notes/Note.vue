@@ -28,7 +28,9 @@ const emit = defineEmits<{
     <TextNote v-if="props.type === 'text'" :note="props" />
     <TableNote v-else-if="props.type === 'table'" :note="props" />
     <ImageNote v-else-if="props.type === 'image'" :note="props" />
-    <Tag />
+    <div v-if="props.tags.length" class="note-tags">
+      <Tag v-for="tag in props.tags" :key="tag" :label="tag" />
+    </div>
   </div>
 </template>
 
@@ -36,7 +38,7 @@ const emit = defineEmits<{
 .note {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   padding: var(--space-md);
   width: 100%;
   margin-bottom: var(--space-sm);
@@ -59,5 +61,9 @@ const emit = defineEmits<{
   gap: var(--space-xs);
   flex-shrink: 0;
   margin-left: auto;
+}
+
+.note-tags {
+  padding-top: (--space-lg);
 }
 </style>
