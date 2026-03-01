@@ -45,6 +45,17 @@ function closeForm() {
 </template>
 
 <style scoped>
+.all-notes {
+  --col-count: 1;
+  --note-font-size: 1rem;
+  columns: var(--col-count);
+  column-gap: var(--space-sm);
+}
+
+@media (min-width: 300px)  { .all-notes { --col-count: 2; --note-font-size: 0.8125rem; } }
+@media (min-width: 768px)  { .all-notes { --col-count: 3; --note-font-size: 0.875rem;  } }
+@media (min-width: 1200px) { .all-notes { --col-count: 4; --note-font-size: 0.9375rem; } }
+
 .add-note-buttons {
   position: fixed;
   bottom: var(--space-lg);

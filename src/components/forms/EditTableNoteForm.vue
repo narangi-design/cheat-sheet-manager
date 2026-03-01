@@ -8,6 +8,7 @@ import { TableCell } from '@tiptap/extension-table/cell'
 import { TableHeader } from '@tiptap/extension-table/header'
 import { Extension } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
+import { Plugin, TextSelection } from '@tiptap/pm/state'
 import FormattingBubbleMenu from './FormattingBubbleMenu.vue'
 import TableHeaderNodeView from './TableHeaderNodeView.vue'
 
@@ -17,6 +18,7 @@ const props = defineProps<{
 
 const TableKeymap = Extension.create({
   name: 'tableKeymap',
+  priority: 200,
   addKeyboardShortcuts() {
     return {
       'Mod-k': ({ editor }) => {
@@ -29,6 +31,51 @@ const TableKeymap = Extension.create({
         return true
       },
 
+      'Mod-Backspace': ({ editor }) => {
+        if (!editor.isActive('table')) return false
+        const { $anchor } = editor.state.selection
+        let rowDepth = -1
+        for (let d = $anchor.depth; d >= 0; d--) {
+          if ($anchor.node(d).type.name === 'tableRow') { rowDepth = d; break }
+        }
+        if (rowDepth === -1) return false
+        const targetRowIndex = Math.max(0, $anchor.index(rowDepth - 1) - 1)
+        return editor.chain()
+          .deleteRow()
+          .command(({ state, dispatch }) => {
+            let targetPos = -1
+            let rowCount = 0
+            state.doc.descendants((node, pos) => {
+              if (targetPos !== -1) return false
+              if (node.type.name === 'tableRow') {
+                if (rowCount === targetRowIndex) {
+                  node.forEach((_, offset) => {
+                    if (targetPos === -1) targetPos = pos + 1 + offset + 1
+                  })
+                  return false
+                }
+                rowCount++
+              }
+            })
+            if (targetPos === -1) return false
+            if (dispatch) dispatch(state.tr.setSelection(TextSelection.create(state.doc, targetPos)))
+            return true
+          })
+          .run()
+      },
+
+      ArrowDown: ({ editor }) => {
+        if (!editor.isActive('table')) return false
+        const { $anchor } = editor.state.selection
+        let rowDepth = -1
+        for (let d = $anchor.depth; d >= 0; d--) {
+          if ($anchor.node(d).type.name === 'tableRow') { rowDepth = d; break }
+        }
+        if (rowDepth === -1) return false
+        const isLastRow = $anchor.index(rowDepth - 1) === $anchor.node(rowDepth - 1).childCount - 1
+        return isLastRow
+      },
+
       // At the very start of a cell: prevent backspace from merging/leaving
       Backspace: ({ editor }) => {
         if (!editor.isActive('table')) return false
@@ -38,6 +85,34 @@ const TableKeymap = Extension.create({
         return true
       },
     }
+  },
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        appendTransaction(_trs, oldState, newState) {
+          if (newState.selection.eq(oldState.selection)) return null
+
+          const { doc, selection } = newState
+          const $pos = doc.resolve(selection.from)
+
+          for (let d = $pos.depth; d >= 0; d--) {
+            if ($pos.node(d).type.name === 'table') return null
+          }
+
+          let firstCellPos = -1
+          doc.descendants((node, pos) => {
+            if (firstCellPos !== -1) return false
+            if (node.type.name === 'tableHeader' || node.type.name === 'tableCell') {
+              firstCellPos = pos + 1
+              return false
+            }
+          })
+
+          if (firstCellPos === -1) return null
+          return newState.tr.setSelection(TextSelection.create(doc, firstCellPos))
+        },
+      }),
+    ]
   },
 })
 
@@ -90,6 +165,10 @@ defineExpose({
 
 .editor-content :deep(.tiptap) {
   outline: none;
+}
+
+.editor-content :deep(.tiptap > p:empty) {
+  display: none;
 }
 
 .editor-content :deep(table) {
