@@ -14,8 +14,23 @@ export const useNotesStore = defineStore('notes', () => {
             .select('data')
             .eq('user_uuid', userUuid)
 
-        if (data) {
+        if (data && data.length > 0) {
             notes.value = data.map(row => row.data as NoteData)
+            return
+        }
+
+        const raw = localStorage.getItem('notes')
+        if (raw) {
+            const parsed = JSON.parse(raw) as { notes: NoteData[] }
+            if (parsed.notes?.length) {
+                notes.value = parsed.notes
+                await Promise.all(
+                    parsed.notes.map(note =>
+                        supabase.from('notes').insert({ id: note.id, user_uuid: userUuid, data: note })
+                    )
+                )
+                localStorage.removeItem('notes')
+            }
         }
     }
 
