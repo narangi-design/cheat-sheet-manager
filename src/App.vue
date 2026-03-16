@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import CreateNoteButton from './components/controls/CreateNoteButton.vue'
 import EditNoteForm from './components/forms/EditNoteForm.vue'
 import Note from './components/notes/Note.vue'
@@ -8,6 +8,10 @@ import { useNotesStore } from './stores/notes'
 import createNote from './createNote'
 
 const store = useNotesStore()
+
+onMounted(() => {
+  store.loadNotes()
+})
 const formNote = ref<NoteData | null>(null)
 
 function openCreateForm(noteType: NoteType) {
