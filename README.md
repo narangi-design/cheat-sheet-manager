@@ -2,6 +2,8 @@
 
 A personal notes app for storing and organizing reference material — code snippets, tables, and images — accessible from any device.
 
+**Live:** https://narangi-design.github.io/cheat-sheet-manager/
+
 ---
 
 ## 1. Features
