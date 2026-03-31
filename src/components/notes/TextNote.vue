@@ -18,8 +18,8 @@ defineProps<{ note: TextNoteData }>()
 }
 
 .text-note-content :deep(pre) {
-  background-color: var(--color-gray-200);
-  color: var(--color-neutral-100);
+  background-color: var(--color-gray-100);
+  color: var(--color-text);
   padding: var(--space-sm);
   border-radius: var(--radius-md);
   overflow-x: auto;

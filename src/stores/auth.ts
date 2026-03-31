@@ -8,15 +8,6 @@ export const useAuthStore = defineStore('auth', () => {
     const loading = ref(true)
 
     async function initialize() {
-        // Handle OAuth PKCE callback
-        if (window.location.pathname.endsWith('/oauth/consent')) {
-            const code = new URLSearchParams(window.location.search).get('code')
-            if (code) {
-                await supabase.auth.exchangeCodeForSession(code)
-                window.history.replaceState({}, '', import.meta.env.BASE_URL)
-            }
-        }
-
         const { data } = await supabase.auth.getSession()
         user.value = data.session?.user ?? null
         loading.value = false
@@ -29,7 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
     async function signInWithOAuth(provider: 'google' | 'github') {
         const { error } = await supabase.auth.signInWithOAuth({
             provider,
-            options: { redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}oauth/consent` },
+            options: { redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}` },
         })
         if (error) throw error
     }

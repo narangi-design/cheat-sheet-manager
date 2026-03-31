@@ -101,10 +101,10 @@ function onBlur() {
   display: inline-flex;
   align-items: center;
   gap: 0.25em;
-  padding: 0.15em var(--space-sm);
-  background-color: var(--color-neutral-200);
-  color: var(--color-text-muted);
-  border-radius: var(--radius-full);
+  padding: 0.35em var(--space-sm);
+  background-color: var(--color-sage-100);
+  color: var(--color-sage-500);
+  border: 1px solid var(--color-sage-200);
   font-size: var(--font-size-xs);
   line-height: 1;
 }
@@ -117,7 +117,6 @@ function onBlur() {
   height: 0.9em;
   padding: 0;
   border: none;
-  border-radius: 50%;
   background: transparent;
   color: inherit;
   font-size: 1em;
@@ -126,7 +125,6 @@ function onBlur() {
 }
 
 .chip-remove:hover {
-  background-color: var(--color-neutral-300);
   color: var(--color-text);
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import CreateNoteButton from './components/controls/CreateNoteButton.vue'
 import EditNoteForm from './components/forms/EditNoteForm.vue'
 import AuthModal from './components/auth/AuthModal.vue'
@@ -15,6 +15,12 @@ const auth = useAuthStore()
 onMounted(async () => {
   await auth.initialize()
   if (auth.user) {
+    store.loadNotes()
+  }
+})
+
+watch(() => auth.user, (user) => {
+  if (user && store.notes.length === 0) {
     store.loadNotes()
   }
 })
@@ -58,6 +64,7 @@ async function handleAuthClose() {
 
   <template v-else>
     <header class="header">
+      <h1 class="app-title">Criblet</h1>
       <span class="user-email">{{ auth.user?.email }}</span>
       <button class="logout-button" @click="auth.signOut">Log out</button>
     </header>
@@ -109,10 +116,14 @@ async function handleAuthClose() {
 
 .header {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: var(--space-sm);
   padding-bottom: var(--space-md);
+}
+
+.app-title {
+  font-size: var(--font-size-xl);
+  margin-right: auto;
 }
 
 .user-email {

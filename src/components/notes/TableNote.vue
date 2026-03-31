@@ -12,19 +12,24 @@ defineProps<{ note: TableNoteData }>()
 .table-note-content :deep(table) {
   border-collapse: collapse;
   width: 100%;
-  table-layout: fixed;
 }
 
 .table-note-content :deep(th),
 .table-note-content :deep(td) {
-  border: var(--border-default);
+  border-bottom: var(--border-default);
   padding: var(--space-xs) var(--space-sm);
   vertical-align: top;
 }
 
+.table-note-content :deep(tr:last-child th),
+.table-note-content :deep(tr:last-child td) {
+  border-bottom: none;
+}
+
 .table-note-content :deep(th) {
-  background-color: var(--color-bg);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
+  border-bottom: var(--border-strong);
+  color: var(--color-primary);
 }
 
 .table-note-content :deep(th p),

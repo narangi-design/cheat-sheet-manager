@@ -46,7 +46,6 @@ const emit = defineEmits<{
   font-size: var(--note-font-size, 1rem);
   background-color: var(--color-surface);
   color: var(--color-text);
-  border: var(--border-default);
   box-shadow: var(--shadow-sm);
 }
 
@@ -54,6 +53,8 @@ const emit = defineEmits<{
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding-bottom: var(--space-xs);
+  border-bottom: var(--border-default);
 }
 
 .note-actions {
@@ -64,6 +65,6 @@ const emit = defineEmits<{
 }
 
 .note-tags {
-  padding-top: (--space-lg);
+  padding-top: var(--space-sm);
 }
 </style>
