@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { supabase, userUuid } from '../../utils/supabase'
+import { supabase } from '../../utils/supabase'
+import { useAuthStore } from '../../stores/auth'
+
+const auth = useAuthStore()
 
 const props = defineProps<{
   imageUrl: string
@@ -18,7 +21,7 @@ async function onFileChange(event: Event) {
   uploadError.value = null
 
   const ext = file.name.split('.').pop()
-  const path = `${userUuid}/${crypto.randomUUID()}.${ext}`
+  const path = `${auth.user?.id}/${crypto.randomUUID()}.${ext}`
 
   const { error } = await supabase.storage.from('Images').upload(path, file)
 

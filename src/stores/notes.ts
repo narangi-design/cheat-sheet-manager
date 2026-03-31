@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { NoteData } from '../types'
-import { supabase, userUuid } from '../utils/supabase'
+import { supabase } from '../utils/supabase'
 
 export const useNotesStore = defineStore('notes', () => {
     const notes = ref<NoteData[]>([])
@@ -12,25 +12,9 @@ export const useNotesStore = defineStore('notes', () => {
         const { data } = await supabase
             .from('notes')
             .select('data')
-            .eq('user_uuid', userUuid)
 
-        if (data && data.length > 0) {
+        if (data) {
             notes.value = data.map(row => row.data as NoteData)
-            return
-        }
-
-        const raw = localStorage.getItem('notes')
-        if (raw) {
-            const parsed = JSON.parse(raw) as { notes: NoteData[] }
-            if (parsed.notes?.length) {
-                notes.value = parsed.notes
-                await Promise.all(
-                    parsed.notes.map(note =>
-                        supabase.from('notes').insert({ id: note.id, user_uuid: userUuid, data: note })
-                    )
-                )
-                localStorage.removeItem('notes')
-            }
         }
     }
 
@@ -38,7 +22,7 @@ export const useNotesStore = defineStore('notes', () => {
         notes.value.push(note)
         await supabase
             .from('notes')
-            .insert({ id: note.id, user_uuid: userUuid, data: note })
+            .insert({ id: note.id, data: note })
     }
 
     async function deleteNote(id: string) {
@@ -60,5 +44,5 @@ export const useNotesStore = defineStore('notes', () => {
         }
     }
 
-    return { notes, allTags, userUuid, loadNotes, addNote, deleteNote, updateNote }
+    return { notes, allTags, loadNotes, addNote, deleteNote, updateNote }
 })
