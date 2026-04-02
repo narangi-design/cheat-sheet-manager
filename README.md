@@ -14,7 +14,8 @@ A personal notes app for storing and organizing reference material — code snip
 - **Tags** — autocomplete from existing tags; canonical form preserved from first use; tag is removed when no notes reference it
 - **Pinned notes**
 - **Responsive masonry layout** — column count adapts to viewport width
-- **Cloud sync** — notes are stored in Supabase and accessible from any device via a personal UUID
+- **Authentication** — sign in with email/password or OAuth (Google); account settings for email and password updates
+- **Cloud sync** — notes are stored in Supabase and accessible from any device after signing in
 
 ---
 
@@ -23,7 +24,7 @@ A personal notes app for storing and organizing reference material — code snip
 ### Prerequisites
 
 - Node.js 18+
-- A [Supabase](https://supabase.com) project
+- A [Supabase](https://supabase.com) project with Auth enabled
 
 ### Supabase setup
 
@@ -33,6 +34,9 @@ Create the notes table in your project's SQL Editor:
 CREATE TABLE notes (
   id TEXT PRIMARY KEY,
   user_uuid UUID NOT NULL,
+  type TEXT,
+  title TEXT,
+  tags TEXT[] DEFAULT '{}',
   data JSONB NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT now()
 );
@@ -41,7 +45,7 @@ ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "allow by user_uuid" ON notes
   FOR ALL
-  USING (user_uuid::text = current_setting('request.headers', true)::json->>'x-user-uuid');
+  USING (user_uuid = auth.uid());
 ```
 
 ### Local setup
@@ -63,10 +67,6 @@ VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY=sb_publishable_...
 npm run dev
 ```
 
-### Accessing from another device
-
-Your personal UUID is generated on first launch and stored in the browser's localStorage. Multi-device access via a share link is planned — see Future improvements.
-
 ---
 
 ## 3. Technical decisions
@@ -74,16 +74,14 @@ Your personal UUID is generated on first launch and stored in the browser's loca
 - **Vue 3 + TypeScript** — component framework with type safety
 - **Pinia** — state management; the store is the single source of truth for notes in memory
 - **Tiptap** — rich text and table editing, chosen for its Vue 3 integration and extension model
-- **Supabase** — PostgreSQL backend with a JavaScript SDK; no custom server needed
-- **UUID-based access** — no auth system; a randomly generated UUID stored in localStorage acts as the user identifier and is sent with every request via a custom HTTP header
-- **Row Level Security** — Supabase RLS policy checks the `x-user-uuid` header against `user_uuid` in the table, so the anon key alone is not enough to read data
+- **Supabase** — PostgreSQL backend with Auth and Storage; no custom server needed
+- **Supabase Auth** — email/password and OAuth sign-in; RLS policies use `auth.uid()` to scope data per user
+- **Typed columns** — `title`, `type`, and `tags` are stored as dedicated columns alongside the full `data` JSONB, enabling server-side filtering in the future
 
 ---
 
 ## 4. Trade-offs
 
-- **UUID in localStorage vs. proper auth** — chosen for simplicity; the downside is that clearing localStorage means losing the key to your notes (the data stays in the database, but recovery requires copying the UUID manually beforehand)
-- **JSONB per note** — each note is stored as a JSONB column rather than individual typed columns; this avoids schema changes when note structure evolves, at the cost of no server-side querying of note fields
 - **Optimistic updates** — UI updates immediately, Supabase write happens in the background; errors are silently ignored for now
 - **No conflict resolution** — editing the same note from two devices simultaneously will result in one write overwriting the other
 
@@ -97,11 +95,10 @@ Your personal UUID is generated on first launch and stored in the browser's loca
 - Note ordering (drag-and-drop or explicit sort field)
 
 ### Structure decisions
-- Proper authentication (Supabase Auth) to replace UUID-based access
-- Separate typed columns for common note fields (title, type, tags) to enable server-side filtering and search
+- Server-side filtering and search using the typed columns
 
 ### UX & interactions
 - Tag filtering on the main view
 - Search across note content
-- Share link that encodes the UUID in the URL, so opening it on another device automatically grants access to your notes
+- Drag-and-drop and paste image upload in the image note editor
 - Pinned notes section at the top
