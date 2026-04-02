@@ -21,8 +21,10 @@ onMounted(async () => {
 })
 
 watch(() => auth.user, (user) => {
-    if (user && store.notes.length === 0) {
+    if (user) {
         store.loadNotes()
+    } else {
+        store.clearNotes()
     }
 })
 
@@ -55,7 +57,7 @@ function handleAuthClose() {
 
     <template v-else>
         <header class="header">
-            <h1 class="app-title">Criblet</h1>
+            <img src="../assets/logo/Text-logo.svg" alt="Criblet" class="app-title" />
             <template v-if="auth.user">
                 <span class="user-email">{{ auth.user.email }}</span>
                 <button class="logout-button" @click="showAccount = true">Account</button>
@@ -63,7 +65,12 @@ function handleAuthClose() {
             </template>
             <button v-else class="sign-in-button" @click="showAuth = true">Sign in</button>
         </header>
-        <div class="all-notes">
+        <div v-if="store.notes.length === 0" class="empty-state">
+            <img src="../assets/logo/Logo-with-text.svg" alt="Criblet" class="empty-logo" />
+            <p class="empty-text">Create your first note</p>
+        </div>
+
+        <div v-else class="all-notes">
             <Note
                 v-for="note in store.notes"
                 :key="note.id"
@@ -82,6 +89,7 @@ function handleAuthClose() {
         </nav>
         <footer class="footer">
             <RouterLink to="/privacy">Privacy Policy</RouterLink>
+            <a href="https://github.com/narangi-design/cheat-sheet-manager" target="_blank" rel="noopener">GitHub</a>
         </footer>
     </template>
 </template>
@@ -115,7 +123,8 @@ function handleAuthClose() {
 }
 
 .app-title {
-    font-size: var(--font-size-xl);
+    height: 1.25rem;
+    width: auto;
     margin-right: auto;
 }
 
@@ -131,10 +140,30 @@ function handleAuthClose() {
     border-radius: var(--radius-md);
 }
 
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    min-height: 60vh;
+}
+
+.empty-logo {
+    width: 18rem;
+}
+
+.empty-text {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+}
+
 .footer {
     position: fixed;
     bottom: var(--space-lg);
     left: var(--space-lg);
+    display: flex;
+    gap: var(--space-md);
 }
 
 .footer a {

@@ -49,5 +49,9 @@ export const useNotesStore = defineStore('notes', () => {
         }
     }
 
-    return { notes, allTags, loadNotes, addNote, deleteNote, updateNote }
+    function clearNotes() {
+        notes.value = []
+    }
+
+    return { notes, allTags, loadNotes, addNote, deleteNote, updateNote, clearNotes }
 })

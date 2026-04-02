@@ -21,17 +21,19 @@
 
   --color-gray-100: #DDDCE0;
   --color-gray-200: #4F5458;
+  --color-black: #000000;
 
   /* Semantic colors */
   --color-bg: var(--color-neutral-100);
   --color-surface: #FFFFFF;
-  --color-text: var(--color-gray-200);
+  --color-text: var(--color-black);
   --color-text-muted: var(--color-sage-400);
-  --color-primary: var(--color-slate-400);
-  --color-primary-hover: var(--color-slate-300);
+  --color-primary: var(--color-black);
+  --color-primary-hover: var(--color-sage-500);
   --color-accent: var(--color-sage-500);
-  --color-border: var(--color-slate-100);
+  --color-border: var(--color-gray-100);
   --color-error: #b91c1c;
+  --color-heading: var(--color-black);
   --color-error: #b91c1c;
   --color-error-bg: #fef2f2;
   --color-success: #15803d;
@@ -76,7 +78,7 @@
   --border-width-md: 2px;
   --border-width-lg: 3px;
   --border-default: var(--border-width-sm) solid var(--color-border);
-  --border-strong: var(--border-width-md) solid var(--color-slate-200);
+  --border-strong: var(--border-width-md) solid var(--color-black);
   --border-accent: var(--border-width-md) solid var(--color-accent);
   --border-primary: var(--border-width-md) solid var(--color-primary);
 
@@ -86,7 +88,7 @@
   --shadow-lg: 0 4px 12px rgba(79, 84, 88, 0.1);
   --shadow-xl: 0 4px 24px rgba(79, 84, 88, 0.12);
   --shadow-inner: inset 0 1px 3px rgba(79, 84, 88, 0.08);
-  --shadow-focus: 0 0 0 2px rgba(98, 124, 135, 0.35);
+  --shadow-focus: 0 0 0 2px rgba(107, 125, 53, 0.4);
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -125,6 +127,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-heading);
   font-weight: var(--font-weight-bold);
   line-height: 1.25;
+  color: var(--color-heading);
 }
 
 code, pre, kbd, samp {
