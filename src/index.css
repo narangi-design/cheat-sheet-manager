@@ -31,6 +31,11 @@
   --color-primary-hover: var(--color-slate-300);
   --color-accent: var(--color-sage-500);
   --color-border: var(--color-slate-100);
+  --color-error: #b91c1c;
+  --color-error: #b91c1c;
+  --color-error-bg: #fef2f2;
+  --color-success: #15803d;
+  --color-success-bg: #f0fdf4;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -157,3 +162,4 @@ button:focus-visible {
   outline: none;
   box-shadow: var(--shadow-focus);
 }
+

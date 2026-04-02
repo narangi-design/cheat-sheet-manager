@@ -5,6 +5,7 @@ import OAuthButton from './OAuthButton.vue'
 const emit = defineEmits<{
   submit: [email: string]
   oauth: [provider: 'google' | 'github']
+  register: []
 }>()
 
 const email = ref('')
@@ -32,6 +33,7 @@ const email = ref('')
       />
       <button type="submit">Continue</button>
     </form>
+    <button class="register-link" @click="emit('register')">No account? Create one</button>
   </div>
 </template>
 
@@ -105,5 +107,20 @@ button[type='submit'] {
 
 button[type='submit']:hover {
   background-color: var(--color-primary-hover);
+}
+
+.register-link {
+  align-self: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.register-link:hover {
+  color: var(--color-primary);
 }
 </style>
