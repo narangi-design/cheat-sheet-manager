@@ -66,7 +66,7 @@ function handleAuthClose() {
             <button v-else class="sign-in-button" @click="showAuth = true">Sign in</button>
         </header>
         <div v-if="store.notes.length === 0" class="empty-state">
-            <img src="../assets/logo/Logo-with-text.svg" alt="Criblet" class="empty-logo" />
+            <img src="../assets/logo/Logo-with-text-with-space.svg" alt="Criblet" class="empty-logo" />
             <p class="empty-text">Create your first note</p>
         </div>
 
@@ -120,6 +120,8 @@ function handleAuthClose() {
     align-items: center;
     gap: var(--space-sm);
     padding-bottom: var(--space-md);
+    border-bottom: var(--border-default);
+    margin-bottom: var(--space-md);
 }
 
 .app-title {
@@ -150,7 +152,7 @@ function handleAuthClose() {
 }
 
 .empty-logo {
-    width: 18rem;
+    width: 32rem;
 }
 
 .empty-text {

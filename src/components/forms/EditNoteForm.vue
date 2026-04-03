@@ -41,13 +41,11 @@ function buildNote(): NoteData {
 
 function handleSave() {
   const note = buildNote()
-
   if (isExisting) {
     store.updateNote(note.id, note)
   } else {
     store.addNote(note)
   }
-
   emit('close')
 }
 </script>
@@ -55,28 +53,38 @@ function handleSave() {
 <template>
   <div :class="$style.overlay" @click.self="emit('close')">
     <div :class="$style.modal">
-      <input
-        :value="editedTitle"
-        @input="(event) => (editedTitle = (event.target as HTMLInputElement).value)"
-        placeholder="Name your note"
-      />
-      <EditTextNoteForm
-        v-if="note.type === NOTE_TYPES.TEXT"
-        ref="textFormRef"
-        :content="note.content"
-      />
-      <EditTableNoteForm
-        v-if="note.type === NOTE_TYPES.TABLE"
-        ref="tableFormRef"
-        :content="note.content"
-      />
-      <EditImageNoteForm
-        v-if="note.type === NOTE_TYPES.IMAGE"
-        ref="imageFormRef"
-        :imageUrl="note.imageUrl"
-      />
-      <TagInput v-model="editedTags" :suggestions="store.allTags" />
-      <button @click="handleSave">Save</button>
+      <div class="modal-header">
+        <input
+          class="title-input"
+          :value="editedTitle"
+          @input="(e) => (editedTitle = (e.target as HTMLInputElement).value)"
+          placeholder="Name your note"
+        />
+      </div>
+
+      <div class="modal-body">
+        <EditTextNoteForm
+          v-if="note.type === NOTE_TYPES.TEXT"
+          ref="textFormRef"
+          :content="note.content"
+        />
+        <EditTableNoteForm
+          v-if="note.type === NOTE_TYPES.TABLE"
+          ref="tableFormRef"
+          :content="note.content"
+        />
+        <EditImageNoteForm
+          v-if="note.type === NOTE_TYPES.IMAGE"
+          ref="imageFormRef"
+          :imageUrl="note.imageUrl"
+        />
+        <TagInput v-model="editedTags" :suggestions="store.allTags" />
+      </div>
+
+      <div class="modal-footer">
+        <button class="cancel-btn" @click="emit('close')">Cancel</button>
+        <button class="save-btn" @click="handleSave">Save</button>
+      </div>
     </div>
   </div>
 </template>
@@ -98,20 +106,76 @@ function handleSave() {
 .modal {
   background-color: var(--color-surface);
   border: var(--border-default);
-  padding: var(--space-xl);
-  min-width: 400px;
-  max-width: 600px;
+  width: min(90vw, 680px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-xl);
+}
+</style>
+
+<style scoped>
+.modal-header {
+  padding: var(--space-lg) var(--space-xl) var(--space-md);
+  border-bottom: var(--border-default);
+}
+
+.title-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-heading);
+  background: transparent;
+  padding: 0;
+}
+
+.title-input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-normal);
+}
+
+.modal-body {
+  padding: var(--space-lg) var(--space-xl);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  box-shadow: var(--shadow-xl);
+}
 
-  input {
-    border: var(--border-default);
-  }
+.modal-footer {
+  padding: var(--space-md) var(--space-xl);
+  border-top: var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
 
-  input:focus {
-    border: var(--border-default);
-  }
+.cancel-btn {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  color: var(--color-text);
+}
+
+.save-btn {
+  padding: var(--space-sm) var(--space-xl);
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+}
+
+.save-btn:hover {
+  background-color: var(--color-primary-hover);
 }
 </style>

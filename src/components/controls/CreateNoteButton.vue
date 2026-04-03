@@ -53,14 +53,19 @@ const config = noteTypeConfig[props.noteType]
 }
 
 .create-note-button:active {
-  background-color: var(--color-slate-400);
   box-shadow: var(--shadow-sm);
+  opacity: 0.85;
 }
 
 .icon {
   display: flex;
   width: 1.25rem;
   height: 1.25rem;
+  transition: transform var(--transition-fast);
+}
+
+.create-note-button:hover .icon {
+  transform: scale(1.1);
 }
 
 .icon :deep(svg) {

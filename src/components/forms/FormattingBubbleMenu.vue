@@ -137,7 +137,7 @@ function toggleLink() {
 }
 
 .bubble-menu button:hover {
-  background-color: var(--color-slate-100);
+  background-color: var(--color-gray-100);
 }
 
 .bubble-menu button.active {

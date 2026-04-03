@@ -15,7 +15,8 @@ const inputValue = ref('')
 const dropdownOpen = ref(false)
 
 const filteredSuggestions = computed(() => {
-  const q = inputValue.value.toLowerCase()
+  const q = inputValue.value.toLowerCase().trim()
+  if (!q) return []
   return props.suggestions.filter(s =>
     !props.modelValue.some(t => t.toLowerCase() === s.toLowerCase()) &&
     s.toLowerCase().includes(q)

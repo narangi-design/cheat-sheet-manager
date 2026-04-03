@@ -35,6 +35,11 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
+@keyframes note-appear {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .note {
   display: flex;
   flex-direction: column;
@@ -47,6 +52,8 @@ const emit = defineEmits<{
   background-color: var(--color-surface);
   color: var(--color-text);
   box-shadow: var(--shadow-sm);
+  border-left: 3px solid var(--color-sage-200);
+  animation: note-appear var(--transition-base) ease;
 }
 
 .note-header {
@@ -62,9 +69,18 @@ const emit = defineEmits<{
   gap: var(--space-xs);
   flex-shrink: 0;
   margin-left: auto;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.note:hover .note-actions {
+  opacity: 1;
 }
 
 .note-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
   padding-top: var(--space-sm);
 }
 </style>
