@@ -54,6 +54,8 @@ const emit = defineEmits<{
   box-shadow: var(--shadow-sm);
   border-left: 3px solid var(--color-sage-200);
   animation: note-appear var(--transition-base) ease;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .note-header {
